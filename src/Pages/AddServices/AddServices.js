@@ -1,0 +1,33 @@
+import axios from 'axios';
+import React from 'react';
+import { useForm } from "react-hook-form";
+import './AddService.css'
+
+const AddServices = () => {
+    const { register, handleSubmit, reset } = useForm();
+    const onSubmit = data => {
+        console.log(data)
+        axios.post('https://serene-spire-85381.herokuapp.com/services', data)
+            .then(res => {
+                console.log(res)
+                if (res.data.insertedId) {
+                    alert('Inserted successfully.')
+                    reset()
+                }
+            })
+    };
+    return (
+        <div className='addService'>
+            <h1>Add services.</h1>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <input {...register("Name", { required: true, maxLength: 20 })} placeholder='name' />
+                <textarea {...register("Description")} placeholder='description' />
+                <input type="number" {...register("price")} placeholder='price' />
+                <input {...register("img")} placeholder='img url' />
+                <input type="submit" />
+            </form>
+        </div>
+    );
+};
+
+export default AddServices;
